@@ -31,8 +31,6 @@ docker build -t <이미지명> .
 ```
 
 3. 도커 컨테이너 실행
-
-환경변수 파일(.env)을 만들지 않았을 때
 ```bash
 docker run -p 8080:8080 --name <컨테이너명> -it -e DB_URL=<데이터베이스_URL> -e DB_USER=<데이터베이스_유저> -e DB_PASSWORD=<데이터베이스_비밀번호> <이미지명>
 ```
