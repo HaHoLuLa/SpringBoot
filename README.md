@@ -32,5 +32,5 @@ docker build -t <이미지명> .
 
 3. 도커 컨테이너 실행
 ```bash
-docker run -p 8080:8080 --name <컨테이너명> -it -e DB_URL=<데이터베이스_URL> -e DB_USER=<데이터베이스_유저> -e DB_PASSWORD=<데이터베이스_비밀번호> -e <프론트엔드_URL> <이미지명>
+docker run -p 8080:8080 --name <컨테이너명> -it -e DB_URL=<데이터베이스_URL> -e DB_USER=<데이터베이스_유저> -e DB_PASSWORD=<데이터베이스_비밀번호> -e FRONT_URL=<프론트엔드_URL> <이미지명>
 ```
