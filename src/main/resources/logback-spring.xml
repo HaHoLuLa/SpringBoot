@@ -1,0 +1,14 @@
+<configuration>
+  <property name="LOG_PATTERN" value="%yellow(%d{yyyy-MM-dd HH:mm:ss}) [%highlight(%level)] %gray(%logger{36}) %blue(-) %msg%n" />
+  
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <charset>EUC-KR</charset>
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+  
+  <root level="DEBUG">
+    <appender-ref ref="CONSOLE" />
+  </root>
+</configuration>
