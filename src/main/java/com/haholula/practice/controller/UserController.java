@@ -39,9 +39,14 @@ public class UserController {
   }
 
   @DeleteMapping("delete/{id}")
-  public String deleteUser(@PathVariable Long id) {
+  public String deleteUser(@PathVariable("id") Long id) {
     log.debug("유저 삭제 > id : {}", id);
     userService.deleteById(id);
     return id + "삭제 완료";
+  }
+
+  @PostMapping("login")
+  public User loginUser(@RequestBody User user) {
+    return user;
   }
 }
