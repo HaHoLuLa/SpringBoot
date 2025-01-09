@@ -6,11 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.haholula.practice.entity.User;
 import com.haholula.practice.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +52,17 @@ public class UserController {
   }
 
   @PostMapping("login")
-  public User loginUser(@RequestBody User user) {
-    return user;
+  public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user, HttpServletRequest request) {
+    HttpSession session = request.getSession();
+    User findUser = userService.findByUserIdAndUserPw(user.getUserId(), user.getUserPw());
+    Map<String, String> response = new HashMap<>();
+    if (findUser != null) {
+      session.setAttribute("userId", user.getUserId());
+      response.put("success", "true");
+      return new ResponseEntity<>(response, HttpStatus.OK);
+    } else {
+      response.put("success", "false");
+      return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
   }
 }
