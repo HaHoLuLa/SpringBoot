@@ -73,10 +73,10 @@ public class UserController {
   }
 
   @PostMapping("logout")
-  public ResponseEntity<Map<String, Boolean>> logout(User user, HttpServletRequest request) {
+  public ResponseEntity<Map<String, Boolean>> logout(@RequestBody User user, HttpServletRequest request) {
     HttpSession session = request.getSession(false);
     Map<String, Boolean> response = new HashMap<>();
-    if (session != null) {
+    if (session != null && user.getUserId().equals((String) session.getAttribute("userId"))) {
       session.invalidate();
       response.put("success", true);
       log.debug("로그아웃 성공");
