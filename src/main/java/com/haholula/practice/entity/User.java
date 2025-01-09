@@ -11,11 +11,13 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "user")
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class User {
@@ -38,7 +40,12 @@ public class User {
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
-  public User() {
-    this.createdAt = LocalDateTime.now();
+  // public User() {
+  //   this.createdAt = LocalDateTime.now();
+  // }
+
+  @Override
+  public String toString() {
+    return "User : id=" + userId + " pw=" + userPw + " email=" + userEmail;
   }
 }

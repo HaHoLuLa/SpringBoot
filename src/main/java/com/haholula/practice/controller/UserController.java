@@ -52,16 +52,52 @@ public class UserController {
   }
 
   @PostMapping("login")
-  public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user, HttpServletRequest request) {
+  public ResponseEntity<Map<String, Boolean>> loginUser(@RequestBody User user, HttpServletRequest request) {
+    // String userId = user.get("userId");
+    // String userPw = user.get("userPw");
+    String userId = user.getUserId();
+    String userPw = user.getUserPw();
     HttpSession session = request.getSession();
-    User findUser = userService.findByUserIdAndUserPw(user.getUserId(), user.getUserPw());
-    Map<String, String> response = new HashMap<>();
+    log.debug("받은 정보 : {}", user);
+    User findUser = userService.findByUserIdAndUserPw(userId, userPw);
+    Map<String, Boolean> response = new HashMap<>();
     if (findUser != null) {
-      session.setAttribute("userId", user.getUserId());
-      response.put("success", "true");
+      log.debug("유저 : {}", findUser);
+      session.setAttribute("userId", userId);
+      response.put("success", true);
       return new ResponseEntity<>(response, HttpStatus.OK);
     } else {
-      response.put("success", "false");
+      response.put("success", false);
+      return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+  @PostMapping("logout")
+  public ResponseEntity<Map<String, Boolean>> logout(User user, HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    Map<String, Boolean> response = new HashMap<>();
+    if (session != null) {
+      session.invalidate();
+      response.put("success", true);
+      log.debug("로그아웃 성공");
+      return new ResponseEntity<>(response, HttpStatus.OK);
+    } else {
+      response.put("success", false);
+      return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+  @GetMapping("check")
+  public ResponseEntity<Map<String, Object>> checkSession(HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    Map<String, Object> response = new HashMap<>();
+    if (session != null && session.getAttribute("userId") != null) {
+      log.debug("유저 : {}", (String) session.getAttribute("userId"));
+      response.put("success", true);
+      response.put("userId", (String) session.getAttribute("userId"));
+      return new ResponseEntity<>(response, HttpStatus.OK);
+    } else {
+      response.put("success", false);
       return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
   }
